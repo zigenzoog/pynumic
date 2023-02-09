@@ -1,16 +1,20 @@
 [tool.poetry]
 name = "pynumic"
 version = "0.1.0"
-description = "Neural Network Library"
+description = "Simple Neural Network Library"
 authors = ["Oleg Alexandrov <alexandrovoleg.ru@gmail.com>"]
 license = "Apache-2.0"
-readme = "README.md"
+readme = [
+    "README.md",
+    "LICENSE"
+]
 homepage = "https://zigenzoog.github.io/pynumic"
 repository = "https://github.com/zigenzoog/pynumic"
 documentation = "https://zigenzoog.github.io/pynumic/docs"
 keywords = [
     "neural",
-    "network"
+    "network",
+    "library"
 ]
 classifiers = [
     "Operating System :: Microsoft :: Windows",
@@ -32,6 +36,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
+sphinx = "^6.1.3"
 
 [tool.poetry.group.dev.dependencies]
 poetry = "^1.3.2"
@@ -51,11 +56,12 @@ mypy = "^0.991"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "^5.3.0"
-pydocstyle = "^6.2.3"
+sphinx = "^6.1.3"
+pydocstyle = "^6.3.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]
