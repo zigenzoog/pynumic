@@ -4,10 +4,7 @@ version = "0.1.0"
 description = "Simple Neural Network Library"
 authors = ["Oleg Alexandrov <alexandrovoleg.ru@gmail.com>"]
 license = "Apache-2.0"
-readme = [
-    "README.md",
-    "LICENSE"
-]
+readme = "README.md"
 homepage = "https://zigenzoog.github.io/pynumic"
 repository = "https://github.com/zigenzoog/pynumic"
 documentation = "https://zigenzoog.github.io/pynumic/docs"
@@ -29,10 +26,6 @@ classifiers = [
 packages = [
     { include = "pynumic", from = "src" }
 ]
-include = [
-    { path = "tests", format = "sdist" },
-    { path = "examples", format = "sdist" }
-]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -52,7 +45,7 @@ bandit = "^1.7.4"
 mypy = "^0.991"
 
 [tool.poetry.group.docs]
-optional = true
+optional = false
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^6.1.3"

@@ -1,5 +1,5 @@
 
-upgrade: ## Upgrade pip.
+upgrade: ## upgrade pip
 	python -m pip install --upgrade pip
 
 lint: ## lint
@@ -10,6 +10,15 @@ clean: ## clean
 	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
 	@find . -not -path './.venv*' -path '*/__pycache__*' -delete
 	@find . -not -path './.venv*' -path '*/*.egg-info*' -delete
+
+check: ## check poetry
+	poetry check
+
+build: ## build project
+	poetry build
+
+publish: check ## publish project
+	poetry publish
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
