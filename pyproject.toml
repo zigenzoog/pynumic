@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pynumic"
 version = "0.1.0"
-description = "Simple Neural Network Library"
+description = "Simple neural network library"
 authors = ["Oleg Alexandrov <alexandrovoleg.ru@gmail.com>"]
 license = "Apache-2.0"
 readme = "README.md"
@@ -58,3 +58,9 @@ pytest-cov = "^4.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+# Installation poetry:
+# --------------------
+# python -m venv .venv
+# .venv/bin/pip install -U pip setuptools
+# .venv/bin/pip install poetry
