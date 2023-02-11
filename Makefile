@@ -5,14 +5,17 @@ upgrade: ## upgrade pip
 lint: ## lint
 	mypy src --ignore-missing-imports
 	flake8 src --ignore=$(shell cat .flakeignore)
+	black src
 
 clean: ## clean
+	poetry cache clear pypi --all
 	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
 	@find . -not -path './.venv*' -path '*/__pycache__*' -delete
 	@find . -not -path './.venv*' -path '*/*.egg-info*' -delete
 
 update: ## update poetry
 	poetry update
+	poetry self update
 
 check: ## check poetry
 	poetry check
