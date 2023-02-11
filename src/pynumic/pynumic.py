@@ -1,3 +1,3 @@
-class Pynumic:
-    """Pynumic.
+class PyNumic:
+    """PyNumic.
     """

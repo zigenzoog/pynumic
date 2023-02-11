@@ -30,25 +30,56 @@ html: clean
 GHPAGES = gh-pages
 DOCSDIR = $(shell pwd)
 TMPDIR  = $(DOCSDIR)/$(GHPAGES)
+exists = `git show-ref --quiet refs/heads/master`
 
-gh-deploy: #html
-	@echo $(DOCSDIR)
-	@echo $(TMPDIR)
+#ifeq (exists, 0)
+#ifeq ($(git show-ref --quiet refs/heads/master), master)
+#ifeq ($(git show-ref --verify --quiet refs/heads/master2), 0)
+#ifdef ($(git rev-parse --verify master),0)
+#ifdef $(git branch --list master | grep master)
+#ifdef $(shell git show-ref --quiet refs/heads/master)
+	#
+	#@echo $(DOCSDIR)
+	#@echo $(git rev-parse --verify master)
+	#@echo $(git branch --list $(GHPAGES) | grep $(GHPAGES))
+	#@echo $(git branch --list master | grep master)
+
+gh-deploy: #html ## deploy docs to github pages
+ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
+	@echo "exist local branch $(GHPAGES)"
+else
+	@echo "not exist local branch $(GHPAGES)"
+#	git checkout --orphan $(GHPAGES)
+#	git reset
+#	git rm --cached -r
+#	git commit --allow-empty -m "$(GHPAGES) init"
+endif
+
+	# проверяем есть ли локальная ветка gh-pages, если нет создаём
+	# если есть, удаляем старый контент
+	# копируем из docs/build/html в ветку gh-pages
+	# проверяем есть ли удалённая ветка gh-pages, если нет создаём
+	# пушим из локального в удалённый репозиторий
+
 #ifndef $(TMPDIR)
 #	@echo "gh-pages is empty"
 #endif
 
-ifneq ($(wildcard $(GHPAGES)),)
-	@echo "Found gh-pages"
-	@rm -rf $(TMPDIR)
-else
-	@echo "Did not find gh-pages"
-endif
-	@cp -r . $(TMPDIR)
-#	@rm -rf $(TMPDIR)
-#	@cp -r . $(TMPDIR)
-#	git branch -D gh-pages
-#	git checkout --orphan gh-pages
+# ifneq ($(wildcard $(GHPAGES)),)
+# 	@echo "Found gh-pages"
+# 	@rm -rf $(TMPDIR)
+# else
+# 	@echo "Did not find gh-pages"
+# endif
+# 	@cp -r . $(TMPDIR)
+
+# 	git branch -D $(GHPAGES)
+# 	git checkout --orphan $(GHPAGES)
+# 	git reset
+# 	git rm --cached -r
+# 	git commit --allow-empty -m "gh-pages init"
+# 	git push -u origin $(GHPAGES)
+
 #	@cp -r $(DOCSDIR)/$(BUILDDIR)/html/* .
 #	git add -A
 #	git commit -m "published docs to gh-pages"
