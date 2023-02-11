@@ -49,10 +49,11 @@ ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist"
 else
 	@echo "Local branch $(GHPAGES) does not exist"
-	git checkout --orphan $(GHPAGES)
-	ls -la |awk '{print $9}' |grep -v git |xargs -l _ rm -rf ./_
+	git switch --orphan $(GHPAGES)
+	ls -la |awk '{print $9}' |grep -v git |xargs -I _ rm -rf ./_
 	git rm -rf .
-	git commit -m "$(GHPAGES) init"
+	git commit --allow-empty -m "$(GHPAGES) init"
+	git push -u origin $(GHPAGES)
 endif
 
 ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 0)
