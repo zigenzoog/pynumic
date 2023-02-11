@@ -25,3 +25,33 @@ html: clean
 	@$(SPHINXBUILD) -b html $(SOURCEDIR)/ $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+# Publish docs to github pages.
+GHPAGES = gh-pages
+DOCSDIR = $(shell pwd)
+TMPDIR  = $(DOCSDIR)/$(GHPAGES)
+
+gh-deploy: #html
+	@echo $(DOCSDIR)
+	@echo $(TMPDIR)
+#ifndef $(TMPDIR)
+#	@echo "gh-pages is empty"
+#endif
+
+ifneq ($(wildcard $(GHPAGES)),)
+	@echo "Found gh-pages"
+	@rm -rf $(TMPDIR)
+else
+	@echo "Did not find gh-pages"
+endif
+	@cp -r . $(TMPDIR)
+#	@rm -rf $(TMPDIR)
+#	@cp -r . $(TMPDIR)
+#	git branch -D gh-pages
+#	git checkout --orphan gh-pages
+#	@cp -r $(DOCSDIR)/$(BUILDDIR)/html/* .
+#	git add -A
+#	git commit -m "published docs to gh-pages"
+#	git push origin :gh-pages
+#	git push origin gh-pages
+#	@rm -rf "$TMP_DIR"
