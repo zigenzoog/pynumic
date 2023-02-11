@@ -11,6 +11,9 @@ clean: ## clean
 	@find . -not -path './.venv*' -path '*/__pycache__*' -delete
 	@find . -not -path './.venv*' -path '*/*.egg-info*' -delete
 
+update: ## update poetry
+	poetry update
+
 check: ## check poetry
 	poetry check
 

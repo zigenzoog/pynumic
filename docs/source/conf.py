@@ -3,25 +3,59 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
 
 from pynumic.__version__ import __version__
 
-project = 'pynumic'
+sys.path.insert(0, os.path.abspath('../src'))
+
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+project = 'PyNumic'
 project_copyright = '2023, Oleg Alexandrov'
 author = 'Oleg Alexandrov'
+version = __version__
 release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions: list[str] = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.githubpages'
+]
 templates_path = ['_templates']
-exclude_patterns = ['build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [
+    'build',
+    'Thumbs.db',
+    '.DS_Store'
+]
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown'
+}
+autosummary_generate = True
+todo_include_todos = False
+master_doc = 'index'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+html_baseurl = 'https://zigenzoog.github.io/pynumic'
 html_theme = 'alabaster'
 html_static_path = ['_static']
+html_theme_options = {
+    'github_button': True,
+    'github_banner': True,
+    'github_type': 'star&v=2',
+    'github_user': 'zigenzoog',
+    'github_repo': 'pynumic'
+}

@@ -46,7 +46,7 @@ bandit = "^1.7.4"
 mypy = "^0.991"
 
 [tool.poetry.group.docs]
-optional = false
+optional = true
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^6.1.3"
