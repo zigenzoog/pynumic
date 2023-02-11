@@ -44,6 +44,12 @@ exists = `git show-ref --quiet refs/heads/master`
 	#@echo $(git branch --list $(GHPAGES) | grep $(GHPAGES))
 	#@echo $(git branch --list master | grep master)
 
+
+# проверяем есть ли локальная ветка gh-pages, если нет создаём
+# если есть, удаляем старый контент
+# копируем из docs/build/html в ветку gh-pages
+# проверяем есть ли удалённая ветка gh-pages, если нет создаём
+# пушим из локального в удалённый репозиторий
 gh-deploy: #html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist"
@@ -53,7 +59,7 @@ else
 	ls -la |awk '{print $9}' |grep -v git |xargs -I _ rm -rf ./_
 	git rm -rf .
 	git commit --allow-empty -m "$(GHPAGES) init"
-	git push -u origin $(GHPAGES)
+	#git push -u origin $(GHPAGES)
 endif
 
 ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 0)
@@ -61,11 +67,7 @@ ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 0)
 endif
 	#git push -u origin $(GHPAGES)
 
-	# проверяем есть ли локальная ветка gh-pages, если нет создаём
-	# если есть, удаляем старый контент
-	# копируем из docs/build/html в ветку gh-pages
-	# проверяем есть ли удалённая ветка gh-pages, если нет создаём
-	# пушим из локального в удалённый репозиторий
+
 
 #ifndef $(TMPDIR)
 #	@echo "gh-pages is empty"
