@@ -43,27 +43,33 @@ exists = `git show-ref --quiet refs/heads/master`
 	#@echo $(git rev-parse --verify master)
 	#@echo $(git branch --list $(GHPAGES) | grep $(GHPAGES))
 	#@echo $(git branch --list master | grep master)
-
+#   git switch --orphan $(GHPAGES)
+#	ls -la |awk '{print $9}' |grep -v git |xargs -I _ rm -rf ./_
+#	git rm -rf .
+#	git commit --allow-empty -m "$(GHPAGES) init"
+#	git push -u origin $(GHPAGES)
 
 # проверяем есть ли локальная ветка gh-pages, если нет создаём
 # если есть, удаляем старый контент
 # копируем из docs/build/html в ветку gh-pages
 # проверяем есть ли удалённая ветка gh-pages, если нет создаём
 # пушим из локального в удалённый репозиторий
-gh-deploy: #html ## deploy docs to github pages
+
+gh-deploy: html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist"
 else
 	@echo "Local branch $(GHPAGES) does not exist"
-	git switch --orphan $(GHPAGES)
-#	git checkout --orphan $(GHPAGES)
-#	ls -la |awk '{print $9}' |grep -v git |xargs -I _ rm -rf ./_
-#	git rm -rf .
-#	git commit --allow-empty -m "$(GHPAGES) init"
-#	git push -u origin $(GHPAGES)
+	git checkout --orphan $(GHPAGES)
+	@find . ! -name ".git/*" "docs/$(BUILDDIR)/html/*" -type f -exec rm -f {} +
+	git add --all
+	git commit --allow-empty
+	git push origin $(GHPAGES)
 endif
 
-ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 0)
+ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 1)
+	@echo "Remote branch $(GHPAGES) exist"
+else
 	@echo "Remote branch $(GHPAGES) does not exist"
 endif
 	#git push -u origin $(GHPAGES)
@@ -86,7 +92,7 @@ endif
 # 	git checkout --orphan $(GHPAGES)
 # 	git reset
 # 	git rm --cached -r
-# 	git commit --allow-empty -m "gh-pages init"
+# 	git commit --allow-empty -m "gh-pages init"git commit --allow-empty -m "$(GHPAGES) init"
 # 	git push -u origin $(GHPAGES)
 
 #	@cp -r $(DOCSDIR)/$(BUILDDIR)/html/* .
