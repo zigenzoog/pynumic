@@ -23,13 +23,60 @@ check: ## check poetry
 build: ## build project
 	poetry build
 
-publish: check ## publish project
+publish: build ## publish project
 	poetry publish
+
+# Publish docs to github pages.
+GHPAGES  = gh-pages
+BUILDDIR = docs/build
+
+# проверяем есть ли локальная ветка gh-pages, если нет создаём
+# если есть, удаляем старый контент
+# копируем из docs/build/html в ветку gh-pages
+# проверяем есть ли удалённая ветка gh-pages, если нет создаём
+# пушим из локального в удалённый репозиторий
+
+list:
+#	${MAKE} -C docs html
+#ifdef $(shell pwd)/docs/build/html/
+#ifeq ($(wildcard $(shell pwd)/docs/build/html), 0)
+#	@echo $(shell find docs/build -name "html2")
+ifneq ($(shell find docs/build -name "html"),)
+	@echo "html exist"
+else
+	@echo "html does not exist"
+endif
+
+gh-deploy: ## deploy docs to github pages
+	${MAKE} -C docs html
+ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
+	@echo "Local branch $(GHPAGES) exist"
+	@echo
+else
+	@echo "Local branch $(GHPAGES) does not exist"
+	@echo
+	@git checkout --orphan $(GHPAGES)
+	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*")
+	@mv $(BUILDDIR)/html/* .
+	@git rm -rf docs
+	@git add .
+	@git commit --allow-empty -m "$(GHPAGES)"
+	@git push origin $(GHPAGES)
+	@git switch master
+endif
+
+ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 1)
+	@echo "Remote branch $(GHPAGES) exist"
+	@echo
+else
+	@echo "Remote branch $(GHPAGES) does not exist"
+	@echo
+endif
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
 
-.PHONY: help # clean build update publish
+.PHONY: help clean build update publish
 help:
 	@awk '                                             \
 		BEGIN {FS = ":.*?## "}                         \

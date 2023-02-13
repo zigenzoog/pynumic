@@ -1,0 +1,16 @@
+# VisualStudioCode
+.vscode/
+
+# JetBrains
+.idea/
+.fleet/
+
+# Environments
+.venv/
+venv/
+
+# Git
+.git*
+
+# GNU Make
+Makefile
