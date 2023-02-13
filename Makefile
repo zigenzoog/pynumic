@@ -29,7 +29,7 @@ publish: check ## publish project
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
 
-.PHONY: help
+.PHONY: help # clean build update publish
 help:
 	@awk '                                             \
 		BEGIN {FS = ":.*?## "}                         \

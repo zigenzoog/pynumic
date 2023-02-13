@@ -38,11 +38,7 @@ exists = `git show-ref --quiet refs/heads/master`
 #ifdef ($(git rev-parse --verify master),0)
 #ifdef $(git branch --list master | grep master)
 #ifdef $(shell git show-ref --quiet refs/heads/master)
-	#
-	#@echo $(DOCSDIR)
-	#@echo $(git rev-parse --verify master)
-	#@echo $(git branch --list $(GHPAGES) | grep $(GHPAGES))
-	#@echo $(git branch --list master | grep master)
+#@find . ! -name ".git/*" "docs/$(BUILDDIR)/html/*" -type f -exec rm -f {} +
 #   git switch --orphan $(GHPAGES)
 #	ls -la |awk '{print $9}' |grep -v git |xargs -I _ rm -rf ./_
 #	git rm -rf .
@@ -55,25 +51,33 @@ exists = `git show-ref --quiet refs/heads/master`
 # проверяем есть ли удалённая ветка gh-pages, если нет создаём
 # пушим из локального в удалённый репозиторий
 
-gh-deploy: html ## deploy docs to github pages
+gh-deploy: ## html deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist"
 else
 	@echo "Local branch $(GHPAGES) does not exist"
-	git checkout --orphan $(GHPAGES)
-	@find . ! -name ".git/*" "docs/$(BUILDDIR)/html/*" -type f -exec rm -f {} +
-	git add --all
-	git commit --allow-empty
-	git push origin $(GHPAGES)
+	@git checkout --orphan $(GHPAGES)
+	@git rm -rf $(shell ls | egrep -v "Makefile|.git*|.idea|docs")
+	@git mv docs/build/html/* .
+	@git rm -rf docs
+	@git add .
+	@git commit --allow-empty -m "$(GHPAGES)"
 endif
-
 ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 1)
 	@echo "Remote branch $(GHPAGES) exist"
 else
 	@echo "Remote branch $(GHPAGES) does not exist"
 endif
+
 	#git push -u origin $(GHPAGES)
 
+
+routine:
+	git switch master
+	git config --global user.email "alexandrovoleg.ru@gmail.com"
+	git config --global user.name "Oleg Alexandrov"
+	git add .
+	git commit -m "Makefile"
 
 
 #ifndef $(TMPDIR)
