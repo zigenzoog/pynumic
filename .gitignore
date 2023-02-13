@@ -315,4 +315,4 @@ cython_debug/
 # json
 *.json
 !examples/json/config/*.json
-!tests/pynn/testdata/*.json
+!tests/**/testdata/*.json

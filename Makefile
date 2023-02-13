@@ -6,6 +6,7 @@ lint: ## lint
 	mypy src --ignore-missing-imports
 	flake8 src --ignore=$(shell cat .flakeignore)
 	black src
+	pylint src
 
 clean: ## clean
 	poetry cache clear pypi --all
@@ -33,12 +34,12 @@ BUILDDIR = docs/build
 gh-deploy: ## deploy docs to github pages
 	${MAKE} -C docs html
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
-	@echo "Local branch $(GHPAGES) exist"
+	@echo "Local branch $(GHPAGES) exist."
 	@echo
 	@git switch $(GHPAGES)
 	@git checkout master $(BUILDDIR)/html/*
 else
-	@echo "Local branch $(GHPAGES) does not exist"
+	@echo "Local branch $(GHPAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GHPAGES)
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea")
