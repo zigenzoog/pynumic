@@ -17,24 +17,18 @@ update: ## update poetry
 	poetry update
 	poetry self update
 
-check: ## check poetry
+poetry.check: ## check poetry
 	poetry check
 
-build: ## build project
+poetry.build: ## build project
 	poetry build
 
-publish: build ## publish project
+poetry.publish: poetry.build ## publish project
 	poetry publish
 
 # Publish docs to github pages.
 GHPAGES  = gh-pages
 BUILDDIR = docs/build
-
-# проверяем есть ли локальная ветка gh-pages, если нет создаём
-# если есть, удаляем старый контент
-# копируем из docs/build/html в ветку gh-pages
-# проверяем есть ли удалённая ветка gh-pages, если нет создаём
-# пушим из локального в удалённый репозиторий
 
 list:
 #	${MAKE} -C docs html
@@ -52,6 +46,8 @@ gh-deploy: ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist"
 	@echo
+	@git switch $(GHPAGES)
+	@git checkout master $(BUILDDIR)/html/*
 else
 	@echo "Local branch $(GHPAGES) does not exist"
 	@echo
@@ -59,19 +55,11 @@ else
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*")
 	@mv $(BUILDDIR)/html/* .
 	@git rm -rf docs
+endif
 	@git add .
 	@git commit --allow-empty -m "$(GHPAGES)"
 	@git push origin $(GHPAGES)
 	@git switch master
-endif
-
-ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 1)
-	@echo "Remote branch $(GHPAGES) exist"
-	@echo
-else
-	@echo "Remote branch $(GHPAGES) does not exist"
-	@echo
-endif
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git

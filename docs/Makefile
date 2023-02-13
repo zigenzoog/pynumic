@@ -25,7 +25,7 @@ html: clean
 	@$(SPHINXBUILD) -b html $(SOURCEDIR)/ $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
-#
+
 ## Publish docs to github pages.
 #GHPAGES = gh-pages
 #DOCSDIR = $(shell pwd)
@@ -122,3 +122,11 @@ html: clean
 
 #	@ls .. | grep -E -v "Makefile|.git*|.idea|docs"
 #	@mv $(BUILDDIR)/html/.nojekyll ..
+
+#ifeq ($(shell git ls-remote --heads origin $(GHPAGES) | wc -l), 1)
+#	@echo "Remote branch $(GHPAGES) exist"
+#	@echo
+#else
+#	@echo "Remote branch $(GHPAGES) does not exist"
+#	@echo
+#endif
