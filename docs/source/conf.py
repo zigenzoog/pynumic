@@ -51,14 +51,20 @@ master_doc = 'index'
 
 html_baseurl = ''  # https://zigenzoog.github.io/pynumic
 html_static_path = ['_static']
-html_theme = 'classic'
-html_theme_options = {
-    'github_button': True,
-    'github_banner': False,
-    'github_type':   'star&v=2',
-    'github_user':   'zigenzoog',
-    'github_repo':   'pynumic'
-}
+html_theme = 'classic'  # classic | alabaster
+
+match html_theme:
+    case 'alabaster':
+        html_theme_options = {
+            'github_button': True,
+            'github_banner': False,
+            'github_type':   'star&v=2',
+            'github_user':   'zigenzoog',
+            'github_repo':   'pynumic'
+        }
+    case _:
+        html_theme_options = {}
+
 html_title = project + ' - Simple neural network library'
 html_short_title = project
 html_show_copyright = False

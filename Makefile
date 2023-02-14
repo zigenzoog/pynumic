@@ -28,27 +28,30 @@ poetry.publish: poetry.build ## publish project
 	poetry publish
 
 # Publish docs to github pages.
-GHPAGES  = gh-pages
-BUILDDIR = docs/build
+GH_PAGES  = gh-pages
+BUILD_DIR = docs/build
 
-gh-deploy: ## deploy docs to github pages
-	${MAKE} -f ./docs/Makefile html
-ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
-	@echo "Local branch $(GHPAGES) exist."
+#.PHONY: html
+html: ## build html docs
+	make -C docs html
+
+gh-deploy: html ## deploy docs to github pages
+ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
+	@echo "Local branch $(GH_PAGES) exist."
 	@echo
-	@git switch $(GHPAGES)
-	@git checkout master $(BUILDDIR)/html/*
+	@git switch $(GH_PAGES)
+	@git checkout master $(BUILD_DIR)/html/*
 else
-	@echo "Local branch $(GHPAGES) does not exist."
+	@echo "Local branch $(GH_PAGES) does not exist."
 	@echo
-	@git checkout --orphan $(GHPAGES)
+	@git checkout --orphan $(GH_PAGES)
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea")
-	@mv $(BUILDDIR)/html/* .
+	@mv $(BUILD_DIR)/html/* .
 	@git rm -rf docs
 endif
 	@git add .
-	@git commit --allow-empty -m "$(GHPAGES)"
-	@git push origin $(GHPAGES)
+	@git commit --allow-empty -m "$(GH_PAGES)"
+	@git push origin $(GH_PAGES)
 	@git switch master
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
