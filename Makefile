@@ -39,13 +39,11 @@ gh-deploy: html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "Local branch $(GH_PAGES) exist."
 	@echo
-	@git switch $(GH_PAGES)
-	@git checkout master $(BUILD_DIR)/html/*
 else
 	@echo "Local branch $(GH_PAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GH_PAGES)
-	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea")
+	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea|.fleet|.vscode")
 	@mv -rf $(BUILD_DIR)/html/* .
 	@git rm -rf docs
 	@git add .
