@@ -29,29 +29,30 @@ poetry.publish: poetry.build ## publish project
 
 # Publish docs to github pages.
 GH_PAGES   = gh-pages
-SOURCE_DIR = docs/source
-BUILD_DIR  = docs/build
+DOCS_DIR   = docs
+SOURCE_DIR = $(DOCS_DIR)/source
+BUILD_DIR  = $(DOCS_DIR)/build
 
 html: ## build html docs
-	make -C docs html
+	make -C $(DOCS_DIR) html
 
 gh-deploy: html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
-	@echo "Local branch $(GH_PAGES) exist."
+	@echo "--- Local branch $(GH_PAGES) exist."
 	@echo
 	@git branch -D $(GH_PAGES)
-	@echo "Delete branch $(GH_PAGES)."
+	@echo "--- Delete branch $(GH_PAGES)."
 endif
-	@echo "Local branch $(GH_PAGES) does not exist."
+	@echo "--- Local branch $(GH_PAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GH_PAGES)
-	@echo "Creat orphan branch $(GH_PAGES)."
+	@echo "--- Creat orphan branch $(GH_PAGES)."
 	@git rm -rf $(shell ls -a | grep -E -v "..|Makefile|docs|.git|.idea|.fleet|.vscode")
-	@echo "Remove contents of branch $(GH_PAGES)."
-	@mv -f $(BUILD_DIR)/html/{.[!.],}* docs/.gitignore docs/README.md .
-	@echo "Move contents from docs to root of branch $(GH_PAGES)."
+	@echo "--- Remove contents of branch $(GH_PAGES)."
+	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
+	@echo "--- Move contents from docs to root of branch $(GH_PAGES)."
 	@git rm -rf docs
-	@echo "Remove docs of branch $(GH_PAGES)."
+	@echo "--- Remove docs of branch $(GH_PAGES)."
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
 #	@git push -f origin $(GH_PAGES)
