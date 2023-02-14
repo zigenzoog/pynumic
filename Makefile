@@ -39,7 +39,7 @@ gh-deploy: html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "Local branch $(GH_PAGES) exist."
 	@echo
-	@git switch --orphan $(GH_PAGES)
+	@git switch $(GH_PAGES)
 	@git checkout master $(BUILD_DIR)/html/*
 else
 	@echo "Local branch $(GH_PAGES) does not exist."
