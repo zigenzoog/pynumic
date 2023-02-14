@@ -35,7 +35,7 @@ BUILD_DIR  = docs/build
 html: ## build html docs
 	make -C docs html
 
-gh-deploy: ## deploy docs to github pages
+gh-deploy: html ## deploy docs to github pages
 ifneq ($(shell find $(BUILD_DIR) -path "html"),)
 	@echo "html exist"
 	@echo
