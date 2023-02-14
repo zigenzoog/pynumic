@@ -36,22 +36,17 @@ html: ## build html docs
 	make -C docs html
 
 gh-deploy: html ## deploy docs to github pages
-ifneq ($(shell find $(BUILD_DIR) -path "html"),)
-	@echo "html exist"
-	@echo
-endif
 ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "Local branch $(GH_PAGES) exist."
 	@echo
 	@git branch -D $(GH_PAGES)
 	@echo "Delete branch $(GH_PAGES)."
 endif
-ifneq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "Local branch $(GH_PAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GH_PAGES)
 	@echo "Creat orphan branch $(GH_PAGES)."
-	@git rm -rf $(shell ls . | grep -E -v "Makefile|docs|.git|.idea|.fleet|.vscode")
+	@git rm -rf $(shell ls -a | grep -E -v "..|Makefile|docs|.git|.idea|.fleet|.vscode")
 	@echo "Remove contents of branch $(GH_PAGES)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* docs/.gitignore docs/README.md .
 	@echo "Move contents from docs to root of branch $(GH_PAGES)."
@@ -61,7 +56,7 @@ ifneq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@git commit --allow-empty -m "$(GH_PAGES)"
 #	@git push -f origin $(GH_PAGES)
 #	@git switch master
-endif
+
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
