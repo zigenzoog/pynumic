@@ -29,7 +29,7 @@ poetry.publish: poetry.build ## publish project
 
 # Publish docs to github pages.
 GHPAGES  = gh-pages
-BUILDDIR = docs/build
+BUILDDIR ?= docs/build
 
 gh-deploy: ## deploy docs to github pages
 	${MAKE} -C docs html
