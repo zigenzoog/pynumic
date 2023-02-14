@@ -46,7 +46,7 @@ else
 	@echo
 	@git checkout --orphan $(GH_PAGES)
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea")
-	@mv $(BUILD_DIR)/html/* .
+	@mv -rf $(BUILD_DIR)/html/* .
 	@git rm -rf docs
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
