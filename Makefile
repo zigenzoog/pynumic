@@ -48,11 +48,11 @@ else
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea")
 	@mv $(BUILD_DIR)/html/* .
 	@git rm -rf docs
-endif
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
 	@git push origin $(GH_PAGES)
 	@git switch master
+endif
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
