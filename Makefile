@@ -39,18 +39,19 @@ gh-deploy: html ## deploy docs to github pages
 ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "Local branch $(GH_PAGES) exist."
 	@echo
+	@git branch -d $(GH_PAGES)
 else
 	@echo "Local branch $(GH_PAGES) does not exist."
 	@echo
+endif
 	@git checkout --orphan $(GH_PAGES)
 	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git|.idea|.fleet|.vscode")
-	@mv -rf .gitignore README.md $(BUILD_DIR)/html/* .
+	@mv -rf docs/.gitignore docs/README.md $(BUILD_DIR)/html/* .
 	@git rm -rf docs
-	@git add .
-	@git commit --allow-empty -m "$(GH_PAGES)"
-	@git push -f origin $(GH_PAGES)
-	@git switch master
-endif
+#	@git add .
+#	@git commit --allow-empty -m "$(GH_PAGES)"
+#	@git push -f origin $(GH_PAGES)
+#	@git switch master
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
