@@ -50,13 +50,16 @@ master_doc = 'index'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_baseurl = ''  # https://zigenzoog.github.io/pynumic
-html_theme = 'alabaster'
 html_static_path = ['_static']
+html_theme = 'classic'
 html_theme_options = {
     'github_button': True,
     'github_banner': False,
-    'github_type': 'star&v=2',
-    'github_user': 'zigenzoog',
-    'github_repo': 'pynumic'
+    'github_type':   'star&v=2',
+    'github_user':   'zigenzoog',
+    'github_repo':   'pynumic'
 }
-
+html_title = project + ' - Simple neural network library'
+html_short_title = project
+html_show_copyright = False
+html_show_sphinx = False
