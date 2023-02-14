@@ -28,10 +28,10 @@ poetry.publish: poetry.build ## publish project
 	poetry publish
 
 # Publish docs to github pages.
-GH_PAGES  = gh-pages
-BUILD_DIR = docs/build
+GH_PAGES   = gh-pages
+SOURCE_DIR = docs/source
+BUILD_DIR  = docs/build
 
-#.PHONY: html
 html: ## build html docs
 	make -C docs html
 
@@ -43,12 +43,12 @@ else
 	@echo "Local branch $(GH_PAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GH_PAGES)
-	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git*|.idea|.fleet|.vscode")
-	@mv -rf $(BUILD_DIR)/html/* .
+	@git rm -rf $(shell ls | grep -E -v "Makefile|docs|.git|.idea|.fleet|.vscode")
+	@mv -rf .gitignore README.md $(BUILD_DIR)/html/* .
 	@git rm -rf docs
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
-	@git push origin $(GH_PAGES)
+	@git push -f origin $(GH_PAGES)
 	@git switch master
 endif
 

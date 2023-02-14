@@ -10,7 +10,7 @@
 venv/
 
 # Git
-.git*
+source/.github
 
 # GNU Make
 Makefile
