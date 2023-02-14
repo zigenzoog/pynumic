@@ -32,7 +32,7 @@ GHPAGES  = gh-pages
 BUILDDIR = docs/build
 
 gh-deploy: ## deploy docs to github pages
-	${MAKE} -C docs html
+	${MAKEFILE} -C docs html
 ifeq ($(shell git ls-remote --heads . $(GHPAGES) | wc -l), 1)
 	@echo "Local branch $(GHPAGES) exist."
 	@echo
