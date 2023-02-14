@@ -1,9 +1,9 @@
-# VisualStudioCode
-.vscode/
-
 # JetBrains
 .idea/
 .fleet/
+
+# VisualStudioCode
+.vscode/
 
 # Environments
 .venv/
