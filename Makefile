@@ -41,23 +41,22 @@ ifeq ($(shell git ls-remote --heads . $(GH_PAGES) | wc -l), 1)
 	@echo "--- Local branch $(GH_PAGES) exist."
 	@echo
 	@git branch -D $(GH_PAGES)
-	@echo "--- Delete branch $(GH_PAGES)."
+	@echo "--- Deleted branch $(GH_PAGES)."
 endif
 	@echo "--- Local branch $(GH_PAGES) does not exist."
 	@echo
 	@git checkout --orphan $(GH_PAGES)
-	@echo "--- Creat orphan branch $(GH_PAGES)."
+	@echo "--- Created orphan branch $(GH_PAGES)."
 	@git rm -rf $(shell ls -a | grep -E -v "..|Makefile|docs|.git|.idea|.fleet|.vscode")
-	@echo "--- Remove contents of branch $(GH_PAGES)."
+	@echo "--- Removed contents of branch $(GH_PAGES)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
-	@echo "--- Move contents from docs to root of branch $(GH_PAGES)."
+	@echo "--- Moved contents from docs to root of branch $(GH_PAGES)."
 	@git rm -rf docs
-	@echo "--- Remove docs of branch $(GH_PAGES)."
+	@echo "--- Removed docs of branch $(GH_PAGES)."
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
 #	@git push -f origin $(GH_PAGES)
 #	@git switch master
-
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
