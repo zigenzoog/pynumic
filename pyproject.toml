@@ -11,6 +11,8 @@ documentation = "https://zigenzoog.github.io/pynumic/docs"
 keywords = [
     "neural",
     "network",
+    "machine",
+    "learning",
     "library"
 ]
 classifiers = [
