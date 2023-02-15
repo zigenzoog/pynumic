@@ -66,6 +66,7 @@ endif
 	@rm -rf docs
 	@echo "--- Removed docs from branch $(GH_BRANCH)."
 	@git add .
+	@git reset -- .gitignore Makefile
 	@git commit --allow-empty -m "$(GH_BRANCH)"
 	@git push -f $(GH_REMOTE) $(GH_BRANCH)
 	@git switch $(MAIN_BRANCH)
