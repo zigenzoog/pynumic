@@ -19,6 +19,7 @@ install: ## install poetry
 	make upgrade
 	.venv/$(VENV_BIN)/pip install -U pip setuptools
 	.venv/$(VENV_BIN)/pip install poetry
+	poetry lock
 
 upgrade: ## upgrade pip
 	.venv/$(VENV_BIN)/python -m pip install --upgrade pip
