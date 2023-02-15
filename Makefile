@@ -1,16 +1,17 @@
 # Main scripts for the project.
 
-VENV_BIN = $(shell ls -A .venv | grep -E "bin|Scripts")
+VENV    ?= .venv
+VENV_BIN = $(shell ls -A $(VENV) | grep -E "bin|Scripts")
 
 install: ## install poetry
-	python -m venv .venv
+	python -m venv $(VENV)
 	make upgrade
-	.venv/$(VENV_BIN)/pip install -U pip setuptools
-	.venv/$(VENV_BIN)/pip install poetry
+	$(VENV)/$(VENV_BIN)/pip install -U pip setuptools
+	$(VENV)/$(VENV_BIN)/pip install poetry
 	poetry lock
 
 upgrade: ## upgrade pip
-	.venv/$(VENV_BIN)/python -m pip install --upgrade pip
+	$(VENV)/$(VENV_BIN)/python -m pip install --upgrade pip
 
 update: ## update poetry
 	poetry update
@@ -33,8 +34,8 @@ lint: ## lint project
 
 clean: ## clean
 	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
-	@find . -not -path "./.venv*" -path "*/__pycache__*" -delete
-	@find . -not -path "./.venv*" -path "*/*.egg-info*" -delete
+	@find . -not -path "./*venv*" -path "*/__pycache__*" -delete
+	@find . -not -path "./*venv*" -path "*/*.egg-info*" -delete
 	poetry cache clear pypi --all
 
 # Publish docs to github pages.
@@ -63,7 +64,7 @@ endif
 	@echo "--- Removed contents of branch $(GH_BRANCH)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
 	@echo "--- Moved contents from docs to root of branch $(GH_BRANCH)."
-	@rm -rf docs
+	@rm -rf $(DOCS_DIR)
 	@echo "--- Removed docs from branch $(GH_BRANCH)."
 	@git add .
 	@git reset -- .gitignore Makefile
