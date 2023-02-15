@@ -32,10 +32,10 @@ lint: ## lint project
 	pylint src
 
 clean: ## clean
-	poetry cache clear pypi --all
 	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
 	@find . -not -path "./.venv*" -path "*/__pycache__*" -delete
 	@find . -not -path "./.venv*" -path "*/*.egg-info*" -delete
+	poetry cache clear pypi --all
 
 # Publish docs to github pages.
 GH_BRANCH   ?= gh-pages
@@ -59,7 +59,7 @@ endif
 	@echo
 	@git checkout --orphan $(GH_BRANCH)
 	@echo "--- Created orphan branch $(GH_BRANCH)."
-	@rm -rf $(shell ls -A | grep -vE "Makefile|docs|.git\b|.venv|.idea|.fleet|.vscode")
+	@rm -rf $(shell ls -A | grep -vE "Makefile|docs|.git\b|*venv|.idea|.fleet|.vscode")
 	@echo "--- Removed contents of branch $(GH_BRANCH)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
 	@echo "--- Moved contents from docs to root of branch $(GH_BRANCH)."
