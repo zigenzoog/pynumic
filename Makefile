@@ -65,7 +65,7 @@ endif
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
 	@echo "--- Moved contents from docs to root of branch $(GH_BRANCH)."
 	@rm -rf docs
-	@echo "--- Removed docs of branch $(GH_BRANCH)."
+	@echo "--- Removed docs from branch $(GH_BRANCH)."
 	@git add .
 	@git commit --allow-empty -m "$(GH_BRANCH)"
 	@git push -f $(GH_REMOTE) $(GH_BRANCH)
