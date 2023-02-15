@@ -1,5 +1,5 @@
+# Main scripts for the project.
 
-# Poetry.
 VENV_BIN = $(shell ls -A .venv | grep -E "bin|Scripts")
 
 install: ## install poetry
@@ -74,7 +74,7 @@ endif
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
 
-.PHONY: help clean install upgrade update check build publish lint gh-deploy html
+.PHONY: help clean install upgrade update check build publish lint gh-deploy html set-url
 help:
 	@awk '                                             \
 		BEGIN {FS = ":.*?## "}                         \
