@@ -1,16 +1,16 @@
+# Environments
+.venv/
+venv/
+
+# Git
+.git*
+
+# GNU Make
+Makefile
+
 # JetBrains
 .idea/
 .fleet/
 
 # VisualStudioCode
 .vscode/
-
-# Environments
-.venv/
-venv/
-
-# Git
-source/.github
-
-# GNU Make
-Makefile

@@ -1,16 +1,4 @@
 
-lint: ## lint
-	mypy src --ignore-missing-imports
-	flake8 src --ignore=$(shell cat .flakeignore)
-	black src
-	pylint src
-
-clean: ## clean
-	poetry cache clear pypi --all
-	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
-	@find . -not -path "./.venv*" -path "*/__pycache__*" -delete
-	@find . -not -path "./.venv*" -path "*/*.egg-info*" -delete
-
 # Poetry.
 VENV_BIN = $(shell ls -A .venv | grep -E "bin|Scripts")
 
@@ -36,6 +24,18 @@ build: check ## build project
 
 publish: build ## publish project
 	poetry publish
+
+lint: ## lint project
+	mypy src --ignore-missing-imports
+	flake8 src --ignore=$(shell cat .flakeignore)
+	black src
+	pylint src
+
+clean: ## clean
+	poetry cache clear pypi --all
+	@rm -rf .pytest_cache/ .mypy_cache/ junit/ build/ dist/
+	@find . -not -path "./.venv*" -path "*/__pycache__*" -delete
+	@find . -not -path "./.venv*" -path "*/*.egg-info*" -delete
 
 # Publish docs to github pages.
 GH_BRANCH   ?= gh-pages
@@ -74,7 +74,7 @@ endif
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
 
-.PHONY: help clean install upgrade update check build publish gh-deploy html
+.PHONY: help clean install upgrade update check build publish lint gh-deploy html
 help:
 	@awk '                                             \
 		BEGIN {FS = ":.*?## "}                         \
