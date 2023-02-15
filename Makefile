@@ -1,18 +1,4 @@
 
-
-VENV_BIN = .venv/$(shell ls -A .venv | grep -E "bin|Scripts")
-
-list:
-	@echo $(VENV_BIN)
-
-install:
-	python -m venv .venv
-	$(VENV_BIN)/pip install -U pip setuptools
-	$(VENV_BIN)/pip install poetry
-
-upgrade: ## upgrade pip
-	python -m pip install --upgrade pip
-
 lint: ## lint
 	mypy src --ignore-missing-imports
 	flake8 src --ignore=$(shell cat .flakeignore)
@@ -25,17 +11,29 @@ clean: ## clean
 	@find . -not -path "./.venv*" -path "*/__pycache__*" -delete
 	@find . -not -path "./.venv*" -path "*/*.egg-info*" -delete
 
-poetry.update: ## update poetry
+# Poetry.
+VENV_BIN = $(shell ls -A .venv | grep -E "bin|Scripts")
+
+install: ## install poetry
+	python -m venv .venv
+	make upgrade
+	.venv/$(VENV_BIN)/pip install -U pip setuptools
+	.venv/$(VENV_BIN)/pip install poetry
+
+upgrade: ## upgrade pip
+	.venv/$(VENV_BIN)/python -m pip install --upgrade pip
+
+update: ## update poetry
 	poetry update
 	poetry self update
 
-poetry.check: ## check poetry
+check: ## check poetry
 	poetry check
 
-poetry.build: ## build project
+build: check ## build project
 	poetry build
 
-poetry.publish: poetry.build ## publish project
+publish: build ## publish project
 	poetry publish
 
 # Publish docs to github pages.
@@ -75,7 +73,7 @@ endif
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
 
-.PHONY: help install clean build update publish gh-deploy html
+.PHONY: help clean install upgrade update check build publish gh-deploy html
 help:
 	@awk '                                             \
 		BEGIN {FS = ":.*?## "}                         \
