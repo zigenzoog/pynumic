@@ -33,6 +33,10 @@ DOCS_DIR   = docs
 SOURCE_DIR = $(DOCS_DIR)/source
 BUILD_DIR  = $(DOCS_DIR)/build
 
+list:
+	@sleep .5
+	@ls -A | grep -vE "Makefile|docs|.git\b|.idea|.fleet|.vscode"
+
 html: ## build html docs
 	make -C $(DOCS_DIR) html
 
@@ -47,7 +51,7 @@ endif
 	@echo
 	@git checkout --orphan $(GH_PAGES)
 	@echo "--- Created orphan branch $(GH_PAGES)."
-	@git rm -rf $(shell ls -a | grep -E -v "..|Makefile|docs|.git|.idea|.fleet|.vscode")
+	@git rm -rf $(shell ls -A | grep -vE "Makefile|docs|.git\b|.idea|.fleet|.vscode")
 	@echo "--- Removed contents of branch $(GH_PAGES)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
 	@echo "--- Moved contents from docs to root of branch $(GH_PAGES)."
@@ -55,8 +59,8 @@ endif
 	@echo "--- Removed docs of branch $(GH_PAGES)."
 	@git add .
 	@git commit --allow-empty -m "$(GH_PAGES)"
-#	@git push -f origin $(GH_PAGES)
-#	@git switch master
+	@git push -f origin $(GH_PAGES)
+	@git switch master
 
 set-url: ## git remote set-url origin git@github.com:login/repo.git
 	git remote set-url origin git@github.com:zigenzoog/pynumic.git
