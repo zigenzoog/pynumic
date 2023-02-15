@@ -39,11 +39,11 @@ clean: ## clean
 	poetry cache clear pypi --all
 
 # Publish docs to github pages.
+
 GH_BRANCH   ?= gh-pages
 GH_REMOTE   ?= origin
 MAIN_BRANCH ?= master
 DOCS_DIR     = docs
-SOURCE_DIR   = $(DOCS_DIR)/source
 BUILD_DIR    = $(DOCS_DIR)/build
 
 html: ## build html docs
