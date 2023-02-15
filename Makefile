@@ -51,6 +51,7 @@ endif
 	@echo
 	@git checkout --orphan $(GH_PAGES)
 	@echo "--- Created orphan branch $(GH_PAGES)."
+	@sleep 2
 	@git rm -rf $(shell ls -A | grep -vE "Makefile|docs|.git\b|.idea|.fleet|.vscode")
 	@echo "--- Removed contents of branch $(GH_PAGES)."
 	@mv -f $(BUILD_DIR)/html/{.[!.],}* $(DOCS_DIR)/.gitignore $(DOCS_DIR)/README.md .
